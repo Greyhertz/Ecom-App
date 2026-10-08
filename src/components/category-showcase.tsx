@@ -46,7 +46,7 @@ export function CategoryShowcase({
           </Badge>
 
           <h2 className="mt-4 font-serif text-4xl tracking-tight sm:text-5xl">
-            Find something you'll love.
+            Find something you&apos;ll love.
           </h2>
 
           <p className="mt-4 text-sm leading-6 text-muted-foreground">
@@ -164,7 +164,7 @@ export function CategoryShowcase({
                       size="sm"
                     >
                       <Link
-                       href={`/collections?category=${encodeURIComponent(category)}`}
+                        href={`/collections?category=${encodeURIComponent(category)}`}
                       >
                         View all
                         <ArrowRight className="ml-2 h-4 w-4" />
