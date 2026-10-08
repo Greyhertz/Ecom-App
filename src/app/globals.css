@@ -29,7 +29,8 @@
     --input: 40 16% 85%;
     --ring: 36 52% 47%;
 
-    --radius: 0.3rem;
+    /* --radius: 0.3rem; */
+    --radius: 6px;
   }
 }
 
