@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { addProduct } from "@/actions/actions";
 
 import { Button } from "@/components/ui/button";
@@ -339,7 +340,7 @@ export default function AddProductPage() {
 
               {imageUrl && (
                 <div className="overflow-hidden rounded-md border bg-muted">
-                  <img
+                  <Image
                     src={imageUrl}
                     alt="Product preview"
                     className="h-48 w-full object-cover"
