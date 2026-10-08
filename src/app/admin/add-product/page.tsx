@@ -331,7 +331,7 @@ export default function AddProductPage() {
 
               <ImageUploader
                 onUploadComplete={(res) => {
-                  setImageUrl(res[0].url);
+                  setImageUrl(res[0]);
                 }}
               />
 

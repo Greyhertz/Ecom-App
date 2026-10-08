@@ -1,44 +1,50 @@
 "use client";
 
 import { useState } from "react";
-// import { useCartStore } from "@/lib/store";
-import type { Product } from "@/data/products";
 import { Check } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/lib/store";
-import { products } from "@/db/schema";
+
+type CartProduct = {
+  id: string;
+  slug: string;
+  name: string;
+  category: string;
+  priceCents: number;
+  description: string;
+  image: string;
+  stock: number;
+};
+
 export function AddToCartButton({
   product,
 }: {
-  product: Product & { stock: number };
+  product: CartProduct;
 }) {
   const addItem = useCartStore((state) => state.addItem);
   const [added, setAdded] = useState(false);
-  const outOfStock = product.stock <= 0;
 
-  function handleAdd() {
-    addItem(product, 1);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
-  }
+  const outOfStock = product.stock <= 0;
 
   const cartItem = useCartStore((state) =>
     state.items.find((item) => item.product.id === product.id),
   );
+
   const currentQtyInCart = cartItem?.quantity || 0;
 
-  // 2. Disable if cart quantity reaches total stock
   const isLimitReached = currentQtyInCart >= product.stock;
 
-  return (
-    <Button onClick={handleAdd} disabled={outOfStock || isLimitReached}>
-      {outOfStock
-        ? "Out of Stock"
-        : isLimitReached
-          ? "Limit Reached"
-          : "Add to Cart"}
-    </Button>
-  );
+  function handleAdd() {
+    if (outOfStock || isLimitReached) return;
+
+    addItem(product, 1);
+    setAdded(true);
+
+    setTimeout(() => {
+      setAdded(false);
+    }, 1500);
+  }
 
   return (
     <Button
@@ -46,11 +52,16 @@ export function AddToCartButton({
       size="lg"
       onClick={handleAdd}
       className="gap-2"
-      disabled={outOfStock}
+      disabled={outOfStock || isLimitReached}
     >
-      {added ? (
+      {outOfStock ? (
+        "Out of Stock"
+      ) : isLimitReached ? (
+        "Limit Reached"
+      ) : added ? (
         <>
-          <Check className="h-4 w-4" /> Added
+          <Check className="h-4 w-4" />
+          Added
         </>
       ) : (
         "Add to cart"
