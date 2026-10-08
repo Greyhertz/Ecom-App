@@ -19,7 +19,7 @@ export default async function ProductPage({
   const { id } = await params;
 
   const product = await db.query.products.findFirst({
-    where: eq(products.id, id),
+    where: eq(products.slug, id),
   });
 
   if (!product) notFound();

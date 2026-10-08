@@ -31,7 +31,7 @@ export async function signup(formData: FormData) {
     .returning(); // This gives us back the user we just created (including their ID)
 
   // 4. Give them their "Wristband" (Session)
-  await createSession(newUser.id);
+  await createSession(newUser.id, newUser.role);
 
   // 5. Send them home
   redirect("/");
@@ -59,7 +59,7 @@ export async function login(formData: FormData) {
   }
 
   // 3. Create session and redirect
-  await createSession(user.id);
+  await createSession(user.id, user.role);
   redirect("/");
 }
 
