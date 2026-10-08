@@ -76,7 +76,7 @@ export default async function CollectionsPage({
               <p className="text-xs text-muted-foreground">
                 Results for{" "}
                 <span className="font-medium text-foreground">
-                  "{q}"
+                  &quot;{q}&quot;
                 </span>
               </p>
             )}
