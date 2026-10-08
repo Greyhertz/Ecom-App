@@ -6,6 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       disallow: ['/admin/', '/cart/', '/orders/'],
     },
-    sitemap: 'https://your-domain.com/sitemap.xml',
+    // Change this line to your live URL:
+    sitemap: 'https://shelfmark-seven.vercel.app/sitemap.xml',
   }
 }
