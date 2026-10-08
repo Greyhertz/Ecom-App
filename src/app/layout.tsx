@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Lora, Inter } from "next/font/google";
 import { Navbar } from "../components/navbar";
-import "./globals.css";
+import "@/app/globals.css";
 import { Footer } from "../components/footer";
 
 const display = Lora({
