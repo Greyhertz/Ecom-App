@@ -2,16 +2,26 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Product } from "@/data/products";
+
+export type CartProduct = {
+  id: string;
+  slug: string;
+  name: string;
+  category: string;
+  priceCents: number;
+  description: string;
+  image: string;
+  stock: number;
+};
 
 export type CartItem = {
-  product: Product;
+  product: CartProduct;
   quantity: number;
 };
 
 type CartState = {
   items: CartItem[];
-  addItem: (product: Product, quantity?: number) => void;
+  addItem: (product: CartProduct, quantity?: number) => void;
   removeItem: (productId: string) => void;
   setQuantity: (productId: string, quantity: number) => void;
   clear: () => void;
@@ -27,24 +37,33 @@ export const useCartStore = create<CartState>()(
       addItem: (product, quantity = 1) => {
         set((state) => {
           const existing = state.items.find(
-            (item) => item.product.id === product.id
+            (item) => item.product.id === product.id,
           );
+
           if (existing) {
             return {
               items: state.items.map((item) =>
                 item.product.id === product.id
-                  ? { ...item, quantity: item.quantity + quantity }
-                  : item
+                  ? {
+                      ...item,
+                      quantity: item.quantity + quantity,
+                    }
+                  : item,
               ),
             };
           }
-          return { items: [...state.items, { product, quantity }] };
+
+          return {
+            items: [...state.items, { product, quantity }],
+          };
         });
       },
 
       removeItem: (productId) => {
         set((state) => ({
-          items: state.items.filter((item) => item.product.id !== productId),
+          items: state.items.filter(
+            (item) => item.product.id !== productId,
+          ),
         }));
       },
 
@@ -52,7 +71,9 @@ export const useCartStore = create<CartState>()(
         set((state) => ({
           items: state.items
             .map((item) =>
-              item.product.id === productId ? { ...item, quantity } : item
+              item.product.id === productId
+                ? { ...item, quantity }
+                : item,
             )
             .filter((item) => item.quantity > 0),
         }));
@@ -61,14 +82,20 @@ export const useCartStore = create<CartState>()(
       clear: () => set({ items: [] }),
 
       totalItems: () =>
-        get().items.reduce((sum, item) => sum + item.quantity, 0),
+        get().items.reduce(
+          (sum, item) => sum + item.quantity,
+          0,
+        ),
 
       subtotal: () =>
         get().items.reduce(
-          (sum, item) => sum + item.product.priceCents * item.quantity,
-          0
+          (sum, item) =>
+            sum + item.product.priceCents * item.quantity,
+          0,
         ),
     }),
-    { name: "shelfmark-cart" }
-  )
+    {
+      name: "shelfmark-cart",
+    },
+  ),
 );
