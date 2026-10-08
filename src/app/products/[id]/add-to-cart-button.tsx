@@ -42,7 +42,7 @@ export function AddToCartButton({
 
   return (
     <Button
-      variant="accent"
+      variant="outline"
       size="lg"
       onClick={handleAdd}
       className="gap-2"
