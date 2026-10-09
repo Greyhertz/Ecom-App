@@ -1,8 +1,7 @@
+
 import type { Metadata } from "next";
 import { Lora, Inter } from "next/font/google";
-import { Navbar } from "../components/navbar";
 import "@/app/globals.css";
-import { Footer } from "../components/footer";
 
 const display = Lora({
   subsets: ["latin"],
@@ -18,7 +17,7 @@ const body = Inter({
 
 export const metadata: Metadata = {
   title: "Shelfmark — Desk goods, made to be used",
-  description:  
+  description:
     "A small shop of writing instruments, paper, and desk goods. Built with Next.js, Tailwind, and shadcn/ui.",
 };
 
@@ -29,10 +28,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
-      <body className="flex min-h-screen flex-col font-sans">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+      <body className="min-h-screen font-sans">
+        {children}
       </body>
     </html>
   );

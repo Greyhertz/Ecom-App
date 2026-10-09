@@ -303,7 +303,7 @@ export default function Home() {
             <input
               type="email"
               placeholder="Your email address"
-              className="h-10 flex-1 rounded-md border bg-background px-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
+              className="h-11 flex-1 rounded-md border bg-background px-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
             />
 
             <Button>

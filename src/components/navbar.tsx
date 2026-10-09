@@ -32,31 +32,19 @@ export async function Navbar() {
   const userEmail =
     typeof userPayload?.email === "string" ? userPayload.email : "";
 
-  const userInitial = (userName || userEmail || "S")
-    .charAt(0)
-    .toUpperCase();
+  const userInitial = (userName || userEmail || "S").charAt(0).toUpperCase();
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur-xl">
       <div className="mx-auto flex h-[72px] max-w-7xl items-center gap-8 px-4 sm:px-6 lg:px-8">
         {/* Brand */}
-        <Link
-          href="/"
-          className="group flex shrink-0 items-center gap-3"
-          aria-label="Shelfmark home"
-        >
-          <span className="flex size-9 items-center justify-center rounded-md border border-foreground bg-foreground text-sm font-semibold text-background transition-transform duration-200 group-hover:rotate-[-4deg]">
+        <Link href="/" className="group flex w-fit items-center gap-3">
+          <span className="flex size-10 items-center justify-center rounded-md bg-accent font-serif text-lg font-semibold text-accent-foreground shadow-sm transition-transform duration-200 group-hover:rotate-[-4deg]">
             S
           </span>
 
-          <span className="hidden sm:block">
-            <span className="block font-serif text-[17px] font-semibold tracking-[-0.02em]">
-              Shelfmark
-            </span>
-
-            <span className="block text-[9px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
-              Curated essentials
-            </span>
+          <span className="font-serif text-xl font-semibold tracking-tight">
+            Shelfmark
           </span>
         </Link>
 
@@ -199,7 +187,7 @@ export async function Navbar() {
                 </Button>
               </Link>
 
-              <Link href="/register">
+              <Link href="/signup">
                 <Button
                   size="sm"
                   className="rounded-full px-4 text-xs shadow-sm"
