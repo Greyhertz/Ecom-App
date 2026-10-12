@@ -25,6 +25,8 @@ import {
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const userSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters"),
@@ -36,7 +38,7 @@ type UserFormValues = z.infer<typeof userSchema>;
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
-
+  const router = useRouter();
   const form = useForm<UserFormValues>({
     resolver: zodResolver(userSchema),
     defaultValues: {
@@ -48,12 +50,23 @@ export default function SignupPage() {
 
   const handleSignup = async (data: UserFormValues) => {
     const formData = new FormData();
-
     formData.append("name", data.name);
-    formData.append("email", data.email);
+    formData.append("email", data.email.trim().toLowerCase());
     formData.append("password", data.password);
 
-    await signup(formData);
+    // We don't need a try/catch block around the whole thing anymore
+    // because the Server Action now handles its own errors gracefully.
+    const result = await signup(formData);
+
+    if (!result.success) {
+      // This will now show the exact error message (e.g., "Email already exists")
+      toast.error(result.error);
+      return;
+    }
+
+    toast.success("Account created successfully.");
+    router.replace("/");
+    router.refresh();
   };
 
   return (

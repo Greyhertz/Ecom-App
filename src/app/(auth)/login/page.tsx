@@ -25,6 +25,8 @@ import {
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const loginSchema = z.object({
   email: z.string().trim().email("Enter a valid email address"),
@@ -34,6 +36,7 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<LoginFormData>({
@@ -46,11 +49,19 @@ export default function LoginPage() {
 
   const handleLogin = async (data: LoginFormData) => {
     const formData = new FormData();
-    formData.append("email", data.email);
+    formData.append("email", data.email.trim().toLowerCase());
     formData.append("password", data.password);
 
-    // The server action does the actual credential check.
-    // If it redirects on success, nothing below runs.
+    const result = await login(formData);
+
+    if (!result.success) {
+      // THIS IS THE KEY: Use the error message coming from the server
+      toast.error(result.error);
+      return;
+    }
+
+    toast.success("Signed in successfully.");
+    router.replace("/");
   };
 
   return (

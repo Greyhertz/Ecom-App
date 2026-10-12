@@ -1,6 +1,6 @@
-
 import type { Metadata } from "next";
 import { Lora, Inter } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
 import "@/app/globals.css";
 
 const display = Lora({
@@ -30,6 +30,7 @@ export default function RootLayout({
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="min-h-screen font-sans">
         {children}
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );
