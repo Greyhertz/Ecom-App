@@ -32,6 +32,8 @@ export async function Navbar() {
   const userEmail =
     typeof userPayload?.email === "string" ? userPayload.email : "";
 
+  const userRole =
+    typeof userPayload?.role === "string" ? userPayload.role : "";
   const userInitial = (userName || userEmail || "S").charAt(0).toUpperCase();
 
   return (
@@ -74,7 +76,7 @@ export async function Navbar() {
               </Link>
             )}
 
-            {userPayload && (
+            {userRole === "admin" && (
               <Link
                 href="/admin/add-product"
                 className="group flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-medium text-muted-foreground transition-all hover:bg-background hover:text-foreground"
@@ -140,15 +142,17 @@ export async function Navbar() {
                   </Link>
                 </DropdownMenuItem>
 
-                <DropdownMenuItem asChild>
-                  <Link
-                    href="/admin/add-product"
-                    className="cursor-pointer rounded-lg px-3 py-2.5 text-xs"
-                  >
-                    <Plus className="mr-3 size-4 text-muted-foreground" />
-                    Add Product
-                  </Link>
-                </DropdownMenuItem>
+                {userRole === "admin" && (
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href="/admin/add-product"
+                      className="cursor-pointer rounded-lg px-3 py-2.5 text-xs"
+                    >
+                      <Plus className="mr-3 size-4 text-muted-foreground" />
+                      Add Product
+                    </Link>
+                  </DropdownMenuItem>
+                )}
 
                 <DropdownMenuItem asChild>
                   <Link

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import { addProduct } from "@/actions/actions";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,6 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { isAdmin } from "@/lib/admin";
+import { redirect } from "next/navigation";
 const steps = [
   {
     number: 1,
@@ -37,7 +38,13 @@ const steps = [
   },
 ];
 
-export default function AddProductPage() {
+export default async function AddProductPage() {
+
+  const authorized = await isAdmin();
+  
+  if (!authorized) {
+    redirect("/"); // Or redirect to /login
+  }
   const [step, setStep] = useState(1);
 
   const [name, setName] = useState("");
@@ -311,7 +318,6 @@ export default function AddProductPage() {
                 Give customers more information about the product.
               </p>
             </div>
-
             <div className="space-y-2">
               <Label htmlFor="description" className="text-xs">
                 Description
@@ -330,19 +336,43 @@ export default function AddProductPage() {
             <div className="space-y-3">
               <Label className="text-xs">Product image</Label>
 
-              <ImageUploader
-                onUploadComplete={(res) => {
-                  setImageUrl(res[0]);
-                }}
-              />
+              {/* Tab/Choice system */}
+              <div className="flex gap-4 mb-2">
+                <Button
+                  type="button"
+                  variant={!imageUrl.startsWith("http") ? "default" : "outline"}
+                  onClick={() => setImageUrl("")}
+                  size="sm"
+                >
+                  Upload
+                </Button>
+                <Button
+                  type="button"
+                  variant={imageUrl.startsWith("http") ? "default" : "outline"}
+                  onClick={() => setImageUrl("https://")}
+                  size="sm"
+                >
+                  Paste URL
+                </Button>
+              </div>
+
+              {imageUrl.startsWith("http") ? (
+                <Input
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  placeholder="https://example.com/image.jpg"
+                />
+              ) : (
+                <ImageUploader onUploadComplete={(url) => setImageUrl(url)} />
+              )}
 
               <input type="hidden" name="image" value={imageUrl} />
 
               {imageUrl && (
-                <div className="overflow-hidden rounded-md border bg-muted">
-                  <Image
+                <div className="overflow-hidden rounded-md border bg-muted mt-2">
+                  <img
                     src={imageUrl}
-                    alt="Product preview"
+                    alt="Preview"
                     className="h-48 w-full object-cover"
                   />
                 </div>

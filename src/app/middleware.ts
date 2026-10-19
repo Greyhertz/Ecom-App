@@ -1,19 +1,24 @@
-import { NextRequest, NextResponse } from "next/server";
+// src/middleware.ts
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 import { decrypt } from "@/lib/session";
 
-export default async function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
   
-  // If the user tries to access /admin
   if (path.startsWith("/admin")) {
-    const cookie = req.cookies.get("session")?.value;
-    const session = await decrypt(cookie);
+    const session = req.cookies.get("session")?.value;
+    const payload = await decrypt(session);
 
-    // If no session OR role is not admin, kick them out!
-    if (!session || session.role !== "admin") {
-      return NextResponse.redirect(new URL("/", req.nextUrl));
+    // Only allow if role is admin
+    if (!payload || payload.role !== "admin") {
+      return NextResponse.redirect(new URL("/login", req.url));
     }
   }
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: ["/admin/:path*"],
+};

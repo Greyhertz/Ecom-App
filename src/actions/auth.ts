@@ -39,7 +39,7 @@ export async function signup(formData: FormData) {
       .returning();
 
     // 3. Create Session
-    await createSession(newUser.id, newUser.role);
+    await createSession(newUser.id, newUser.role, newUser.email);
     
     return { success: true };
   } catch (error) {
@@ -66,7 +66,7 @@ export async function login(formData: FormData) {
     return { success: false, error: "Invalid email or password." };
   }
 
-  await createSession(user.id, user.role);
+  await createSession(user.id, user.role, user.email);
   return { success: true };
 }
 
