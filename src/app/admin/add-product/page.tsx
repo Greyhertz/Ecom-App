@@ -1,4 +1,4 @@
-
+export const dynamic = "force-dynamic"; 
 import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/admin";
 import { ProductForm } from "./product-form"; // Import your form here

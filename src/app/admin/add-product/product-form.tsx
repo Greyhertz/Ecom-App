@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import { useState } from "react";
 import Image from "next/image";
@@ -19,7 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { isAdmin } from "@/lib/admin";
 import { redirect } from "next/navigation";
 const steps = [
   {
