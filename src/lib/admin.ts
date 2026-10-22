@@ -1,6 +1,5 @@
-
-"use server"
 // src/lib/admin.ts
+import "server-only";
 import { decrypt } from "@/lib/session";
 import { cookies } from "next/headers";
 

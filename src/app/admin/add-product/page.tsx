@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic"; 
+export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/admin";
 import { ProductForm } from "./product-form"; // Import your form here
@@ -6,7 +6,7 @@ import { ProductForm } from "./product-form"; // Import your form here
 export default async function AddProductPage() {
   // The "Bodyguard" checks if you are allowed in
   const authorized = await isAdmin();
-  
+
   if (!authorized) {
     redirect("/");
   }
@@ -17,7 +17,7 @@ export default async function AddProductPage() {
       <div className="mb-10">
         <h1 className="text-3xl font-serif">Add product</h1>
       </div>
-      <ProductForm /> 
+      <ProductForm />
     </main>
   );
 }
