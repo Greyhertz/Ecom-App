@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, Instagram } from "lucide-react";
+import { Press, Stagger, StaggerItem } from "./motion";
+import { BackToTop } from "./back-to-top";
 
 const shopLinks = [
   { label: "All products", href: "/collections" },
@@ -14,98 +16,93 @@ const helpLinks = [
   { label: "Contact us", href: "mailto:hello@shelfmark.store" },
 ];
 
+const linkClass =
+  "inline-flex min-h-9 items-center text-sm text-muted-foreground transition-colors hover:text-foreground active:opacity-60";
+
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-card">
-      <div className="container">
-        {/* Main footer */}
-        <div className="grid gap-12 py-14 md:grid-cols-2 lg:grid-cols-4 lg:gap-10 lg:py-16">
-          {/* Brand */}
-          <div className="space-y-5 lg:col-span-2">
-            {/* Brand */}
-            <Link href="/" className="group flex w-fit items-center gap-3">
-              <span className="flex size-10 items-center justify-center rounded-md bg-accent font-serif text-lg font-semibold text-accent-foreground shadow-sm transition-transform duration-200 group-hover:rotate-[-4deg]">
-                S
-              </span>
+    <footer className="rounded-t-[28px] border-t border-border bg-card sm:rounded-none">
+      <div className="container px-5 sm:px-6 lg:px-8">
+        <Stagger
+          stagger={0.1}
+          className="grid grid-cols-2 gap-x-6 gap-y-9 pb-8 pt-10 sm:gap-x-10 sm:py-14 lg:grid-cols-4 lg:gap-10"
+        >
+          {/* Brand: full width on mobile, two columns on desktop */}
+          <StaggerItem className="col-span-2 space-y-4 lg:col-span-2">
+            <Press scale={0.97} className="w-fit">
+              <Link href="/" className="group flex w-fit items-center gap-2.5">
+                <span className="flex size-10 items-center justify-center rounded-xl bg-accent font-serif text-lg font-semibold text-accent-foreground transition-transform duration-200 group-hover:rotate-[-4deg]">
+                  S
+                </span>
+                <span className="font-serif text-xl font-semibold tracking-tight">
+                  Shelfmark
+                </span>
+              </Link>
+            </Press>
 
-              <span className="font-serif text-xl font-semibold tracking-tight">
-                Shelfmark
-              </span>
-            </Link>
-
-            <p className="max-w-sm text-sm leading-7 text-muted-foreground">
-              Thoughtful goods for the spaces you live and work in. Discover
-              everyday essentials chosen to be useful, beautiful, and made to
-              last.
+            <p className="max-w-sm text-sm leading-6 text-muted-foreground">
+              Thoughtful goods for the spaces you live and work in. Everyday
+              essentials chosen to be useful, beautiful, and made to last.
             </p>
 
             <Link
               href="/collections"
-              className="inline-flex items-center gap-2 text-sm font-medium transition-colors hover:text-accent"
+              className="group inline-flex min-h-9 items-center gap-1.5 text-sm font-medium transition-colors hover:text-accent active:opacity-60"
             >
               Explore the collection
-              <ArrowUpRight className="size-4" />
+              <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </Link>
-          </div>
+          </StaggerItem>
 
-          {/* Shop */}
-          <div className="space-y-5">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.16em]">
-              Explore
-            </h2>
-
-            <ul className="space-y-3">
+          {/* Explore */}
+          <StaggerItem className="min-w-0">
+            <h2 className="text-sm font-semibold">Explore</h2>
+            <ul className="mt-3 flex flex-col items-start">
               {shopLinks.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                  >
+                <li key={link.label} className="max-w-full">
+                  <Link href={link.href} className={linkClass}>
                     {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </StaggerItem>
 
           {/* Customer care */}
-          <div className="space-y-5">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.16em]">
-              Customer care
-            </h2>
-
-            <ul className="space-y-3">
+          <StaggerItem className="min-w-0">
+            <h2 className="text-sm font-semibold">Customer care</h2>
+            <ul className="mt-3 flex flex-col items-start">
               {helpLinks.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                  >
+                <li key={link.label} className="max-w-full">
+                  <Link href={link.href} className={linkClass}>
                     {link.label}
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  href="https://instagram.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Instagram"
+                  className={`${linkClass} gap-1.5`}
+                >
+                  <Instagram className="size-4 shrink-0" />
+                  Follow along
+                  <ArrowUpRight className="size-3 shrink-0" />
+                </Link>
+              </li>
             </ul>
-
-            <Link
-              href="https://instagram.com/"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Instagram"
-              className="inline-flex items-center gap-2 pt-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <Instagram className="size-4" />
-              Follow along
-              <ArrowUpRight className="size-3" />
-            </Link>
-          </div>
-        </div>
+          </StaggerItem>
+        </Stagger>
 
         {/* Bottom bar */}
-        <div className="flex flex-col gap-3 border-t border-border py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Shelfmark. All rights reserved.</p>
-
-          <p className="tracking-wide">Considered goods. Everyday living.</p>
+        <div className="flex items-center justify-between gap-4 border-t border-border pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-5 text-xs text-muted-foreground">
+          <div className="min-w-0">
+            <p>© {new Date().getFullYear()} Shelfmark. All rights reserved.</p>
+            <p className="mt-1 hidden sm:block">Considered goods. Everyday living.</p>
+          </div>
+          <BackToTop />
         </div>
       </div>
     </footer>

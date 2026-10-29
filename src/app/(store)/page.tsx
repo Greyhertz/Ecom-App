@@ -1,317 +1,205 @@
 import Image from "next/image";
 import Link from "next/link";
-
-import { ArrowRight, MoveUpRight } from "lucide-react";
+import { ArrowRight, ChevronRight, MoveUpRight } from "lucide-react";
 
 import { products } from "@/data/products";
 import { formatPrice } from "@/lib/utils";
-
 import { CategoryShowcase } from "@/components/category-showcase";
+import { NewsletterCard } from "@/components/newsletter-card";
+import {
+  MotionRoot,
+  ParallaxFrame,
+  Press,
+  Reveal,
+  Stagger,
+  StaggerItem,
+} from "@/components/motion";
 
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+
+const categories = [
+  { name: "Office", description: "Better tools for better work." },
+  { name: "Body & Care", description: "Small rituals for everyday life." },
+  { name: "Jewelry", description: "Simple pieces with character." },
+  { name: "Plants", description: "Bring something living indoors." },
+];
+
 export default function Home() {
-  
-  const featuredProducts = products.slice(0, 4);
-  const categories = ["Office", "Body & Care", "Jewelry", "Plants"]; 
+  const hero = products[0];
 
   return (
-    <main className="min-h-screen">
-      {/* ================================================== */}
-      {/* HERO */}
-      {/* ================================================== */}
+    <MotionRoot>
+      <main className="min-h-screen min-w-0 overflow-x-clip font-sans">
+        {/* Hero: compact and stacked on mobile, large and split on desktop */}
+        <section className="bg-[#F5F0E7]">
+          <div className="container grid min-w-0 gap-6 px-5 pb-8 pt-5 md:grid-cols-2 md:items-center md:gap-12 md:px-8 md:py-20 lg:gap-16 lg:py-24">
+            <Stagger immediate className="min-w-0 max-w-xl">
+              <StaggerItem>
+                <span className="inline-flex rounded-full bg-[#E4D7C6] px-3.5 py-1.5 text-xs font-medium text-[#315747]">
+                  The everyday edit
+                </span>
+              </StaggerItem>
 
-      <section className="border-b">
-        <div className="container grid min-h-[650px] items-center gap-12 py-16 lg:grid-cols-2 lg:py-24">
-          <div className="max-w-xl">
-            <Badge variant="outline">
-              Curated for everyday living
-            </Badge>
+              <StaggerItem>
+                <h1 className="mt-4 font-serif text-[2.5rem] font-medium leading-[1.02] tracking-[-0.045em] text-[#244A3A] md:mt-5 md:text-6xl lg:text-7xl">
+                  Live well.
+                  <span className="mt-1 block italic text-[#B5684C]">
+                    Choose well.
+                  </span>
+                </h1>
+              </StaggerItem>
 
-            <h1 className="mt-6 font-serif text-5xl leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
-              Things worth having around.
-            </h1>
-
-            <p className="mt-6 max-w-lg text-base leading-7 text-muted-foreground">
-              Thoughtfully selected pieces for your workspace,
-              personal care, style, and home.
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild size="lg">
-                <Link href="/products">
-                  Shop the collection
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-              >
-                <Link href="#collections">
-                  Explore collections
-                </Link>
-              </Button>
-            </div>
-
-            <div className="mt-10 flex items-center gap-6 text-sm text-muted-foreground">
-              <span>Curated selection</span>
-              <span>•</span>
-              <span>Everyday essentials</span>
-            </div>
-          </div>
-
-          <div className="relative">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-muted">
-              <Image
-                src={featuredProducts[0]?.image ?? ""}
-                alt={
-                  featuredProducts[0]?.name ??
-                  "Featured product"
-                }
-                fill
-                priority
-                className="object-cover"
-              />
-            </div>
-
-            <Card className="absolute -bottom-6 -left-6 hidden w-64 shadow-lg sm:block">
-              <CardContent className="p-5">
-                <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                  Featured
+              <StaggerItem>
+                <p className="mt-3 max-w-md text-[15px] leading-6 text-[#655F55] md:mt-4 md:text-base md:leading-7">
+                  Thoughtfully chosen essentials for your workspace, personal
+                  care, style, and home.
                 </p>
+              </StaggerItem>
 
-                <p className="mt-2 font-medium">
-                  {featuredProducts[0]?.name}
-                </p>
+              <StaggerItem className="mt-6 flex flex-col gap-2 md:mt-7 md:flex-row md:items-center md:gap-3">
+                <Press className="md:w-auto">
+                  <Button
+                    asChild
+                    className="h-[52px] w-full rounded-full bg-[#244A3A] px-7 text-base text-white hover:bg-[#19382B] md:w-auto"
+                  >
+                    <Link href="/collections">
+                      Shop the collection
+                      <ArrowRight className="ml-2 size-4" />
+                    </Link>
+                  </Button>
+                </Press>
 
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {featuredProducts[0]
-                    ? formatPrice(
-                        featuredProducts[0].priceCents,
-                      )
-                    : ""}
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
+                <Press className="md:w-auto">
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className="h-11 w-full rounded-full text-base font-medium text-[#315747] hover:bg-[#E4D7C6]/60 md:h-12 md:w-auto"
+                  >
+                    <Link href="#collections">Browse categories</Link>
+                  </Button>
+                </Press>
+              </StaggerItem>
+            </Stagger>
 
-      {/* ================================================== */}
-      {/* FEATURED PRODUCTS */}
-      {/* ================================================== */}
+            {hero && (
+              <Reveal delay={0.15} y={28} className="relative min-w-0">
+                <Press scale={0.985}>
+                  <Link
+                    href={`/products/${hero.id}`}
+                    className="group relative block rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#244A3A] focus-visible:ring-offset-4 md:rounded-[28px]"
+                  >
+                    {/* Short banner on mobile, tall portrait on desktop */}
+                    <ParallaxFrame className="relative aspect-[16/10] rounded-3xl bg-[#E6DCCB] shadow-[0_12px_32px_rgba(36,74,58,0.12)] md:aspect-[4/5] md:rounded-[28px] md:shadow-[0_16px_40px_rgba(36,74,58,0.14)]">
+                      <Image
+                        src={hero.image}
+                        alt={hero.name}
+                        fill
+                        priority
+                        sizes="(min-width: 768px) 50vw, 100vw"
+                        className="object-cover"
+                      />
+                    </ParallaxFrame>
 
-      <section className="container py-20 sm:py-24">
-        <div className="flex items-end justify-between gap-6">
-          <div>
-            <Badge variant="outline">
-              Featured
-            </Badge>
-
-            <h2 className="mt-4 font-serif text-4xl tracking-tight sm:text-5xl">
-              A few things we like.
-            </h2>
-
-            <p className="mt-4 max-w-xl text-sm leading-6 text-muted-foreground">
-              Start with a selection of pieces chosen to
-              make everyday spaces and routines a little
-              better.
-            </p>
-          </div>
-
-          <Button
-            asChild
-            variant="ghost"
-            className="hidden sm:flex"
-          >
-            <Link href="/collections">
-              View everything
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
-        </div>
-
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {featuredProducts.map((product) => (
-            <Link
-              key={product.id}
-              href={`/products/${product.id}`}
-              className="group"
-            >
-              <Card className="overflow-hidden border-0 bg-transparent shadow-none">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-muted">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                </div>
-
-                <CardContent className="px-0 pt-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="font-medium">
-                        {product.name}
-                      </h3>
-
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {product.category}
+                    {/* Frosted product chip, like an iOS widget */}
+                    <div className="absolute inset-x-2.5 bottom-2.5 flex items-center justify-between gap-3 rounded-2xl bg-white/70 px-3.5 py-2.5 backdrop-blur-xl md:inset-x-3 md:bottom-3 md:px-4 md:py-3">
+                      <div className="min-w-0">
+                        <p className="text-xs text-[#655F55]">Editor&apos;s pick</p>
+                        <p className="truncate text-sm font-medium text-[#244A3A]">
+                          {hero.name}
+                        </p>
+                      </div>
+                      <p className="shrink-0 text-sm font-semibold tabular-nums text-[#244A3A]">
+                        {formatPrice(hero.priceCents)}
                       </p>
                     </div>
+                  </Link>
+                </Press>
+              </Reveal>
+            )}
+          </div>
+        </section>
 
-                    <p className="text-sm font-medium">
-                      {formatPrice(product.priceCents)}
+        {/* Category showcase (the only product area on the page) */}
+        <div id="collections" className="min-w-0 scroll-mt-20">
+          <CategoryShowcase products={products} />
+        </div>
+
+        {/* Workspace feature (tablet and up) */}
+        <section className="container hidden min-w-0 px-6 py-16 md:block lg:px-8 lg:py-24">
+          <Reveal>
+            <div className="grid min-w-0 overflow-hidden rounded-3xl bg-card shadow-[0_4px_24px_rgba(0,0,0,0.05)] lg:grid-cols-2">
+              <ParallaxFrame className="relative aspect-[5/3] w-full bg-muted lg:aspect-auto lg:min-h-[440px]">
+                <Image
+                  src="https://images.unsplash.com/photo-1497215842964-222b430dc094?w=1200&q=80"
+                  alt="Modern workspace"
+                  fill
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="object-cover"
+                />
+              </ParallaxFrame>
+
+              <div className="flex min-w-0 flex-col justify-center p-8 md:p-12 lg:p-14 xl:p-16">
+                <h2 className="max-w-lg break-words font-serif text-4xl font-medium leading-tight tracking-tight lg:text-5xl">
+                  Make your everyday space feel intentional.
+                </h2>
+                <p className="mt-5 max-w-lg text-base leading-7 text-muted-foreground">
+                  From ergonomic seating and functional desks to the smaller
+                  objects that keep everything in place, build a workspace that
+                  works for you.
+                </p>
+                <div className="mt-8">
+                  <Press className="w-fit">
+                    <Button asChild className="rounded-full px-6">
+                      <Link href={`/collections?category=${encodeURIComponent("Office")}`}>
+                        Explore Office
+                        <MoveUpRight className="ml-2 size-4" />
+                      </Link>
+                    </Button>
+                  </Press>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </section>
+
+        {/* Shop by category: iOS-style grouped list on mobile, cards on larger screens */}
+        <section className="container min-w-0 px-5 py-12 sm:px-6 sm:pb-16 sm:pt-0 lg:px-8 lg:pb-24">
+          <Reveal>
+            <h2 className="mb-4 font-serif text-2xl font-medium tracking-tight sm:mb-6 sm:text-3xl">
+              Shop by category
+            </h2>
+          </Reveal>
+
+          <Stagger
+            stagger={0.06}
+            className="divide-y divide-border/70 overflow-hidden rounded-3xl bg-card shadow-[0_3px_18px_rgba(0,0,0,0.04)] sm:grid sm:grid-cols-2 sm:gap-4 sm:divide-y-0 sm:overflow-visible sm:rounded-none sm:bg-transparent sm:shadow-none lg:grid-cols-4"
+          >
+            {categories.map((category) => (
+              <StaggerItem key={category.name} className="sm:h-full">
+                <Link
+                  href={`/collections?category=${encodeURIComponent(category.name)}`}
+                  className="group flex min-h-16 min-w-0 items-center justify-between gap-4 px-5 py-4 transition-colors active:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:h-full sm:rounded-2xl sm:bg-card sm:p-6 sm:shadow-[0_3px_18px_rgba(0,0,0,0.04)] sm:hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+                >
+                  <div className="min-w-0">
+                    <h3 className="text-base font-medium">{category.name}</h3>
+                    <p className="mt-0.5 text-sm leading-5 text-muted-foreground">
+                      {category.description}
                     </p>
                   </div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* ================================================== */}
-      {/* CATEGORY CAROUSEL */}
-      {/* ================================================== */}
-
-      <div id="collections">
-        <CategoryShowcase products={products} />
-      </div>
-
-      {/* ================================================== */}
-      {/* EDITORIAL */}
-      {/* ================================================== */}
-
-      <section className="container py-20 sm:py-28">
-        <div className="grid overflow-hidden rounded-2xl border bg-muted/30 lg:grid-cols-2">
-          <div className="relative min-h-[400px]">
-            <Image
-              src={
-                "https://images.unsplash.com/photo-1497215842964-222b430dc094?w=1200&q=80"
-              }
-              alt="Modern workspace"
-              fill
-              className="object-cover"
-            />
-          </div>
-
-          <div className="flex flex-col justify-center p-8 sm:p-12 lg:p-16">
-            <Badge
-              variant="outline"
-              className="w-fit"
-            >
-              The workspace edit
-            </Badge>
-
-            <h2 className="mt-5 max-w-lg font-serif text-4xl tracking-tight sm:text-5xl">
-              Make your everyday space feel intentional.
-            </h2>
-
-            <p className="mt-5 max-w-lg text-sm leading-7 text-muted-foreground">
-              From ergonomic seating and functional desks to
-              the smaller objects that keep everything in
-              place, build a workspace that works for you.
-            </p>
-
-            <div className="mt-8">
-              <Button asChild>
-                <Link href={`/collections?category=${encodeURIComponent("Office")}`}>
-                  Explore Office
-                  <MoveUpRight className="ml-2 h-4 w-4" />
+                  <ChevronRight className="size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1" />
                 </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </section>
 
-      {/* ================================================== */}
-      {/* COLLECTION LINKS */}
-      {/* ================================================== */}
-
-      <section className="container pb-20 sm:pb-28">
-        <Separator className="mb-12" />
-
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            {
-              name: "Office",
-              description: "Better tools for better work.",
-            },
-            {
-              name: "Body & Care",
-              description: "Small rituals for everyday life.",
-            },
-            {
-              name: "Jewelry",
-              description: "Simple pieces with character.",
-            },
-            {
-              name: "Plants",
-              description: "Bring something living indoors.",
-            },
-          ].map((category) => (
-            <Link
-              key={category.name}
-              href={`/collections?category=${encodeURIComponent(
-                category.name,
-              )}`}
-              className="group rounded-xl border p-6 transition-colors hover:bg-muted/50"
-            >
-              <div className="flex items-center justify-between">
-                <h3 className="font-medium">
-                  {category.name}
-                </h3>
-
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </div>
-
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                {category.description}
-              </p>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* ================================================== */}
-      {/* NEWSLETTER */}
-      {/* ================================================== */}
-
-      <section className="border-t bg-muted/30">
-        <div className="container py-20 text-center sm:py-24">
-          <Badge variant="outline">
-            Stay in the loop
-          </Badge>
-
-          <h2 className="mx-auto mt-4 max-w-2xl font-serif text-4xl tracking-tight sm:text-5xl">
-            Good things, occasionally.
-          </h2>
-
-          <p className="mx-auto mt-4 max-w-lg text-sm leading-6 text-muted-foreground">
-            New collections, useful finds, and occasional
-            inspiration. No unnecessary noise.
-          </p>
-
-          <div className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
-            <input
-              type="email"
-              placeholder="Your email address"
-              className="h-11 flex-1 rounded-md border bg-background px-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
-            />
-
-            <Button>
-              Subscribe
-            </Button>
-          </div>
-        </div>
-      </section>
-    </main>
+        {/* Newsletter */}
+        <section className="bg-[#F3EFE6] px-4 pb-8 pt-8 sm:px-6 sm:py-14 lg:px-8">
+          <Reveal>
+            <NewsletterCard />
+          </Reveal>
+        </section>
+      </main>
+    </MotionRoot>
   );
 }

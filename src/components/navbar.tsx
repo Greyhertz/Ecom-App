@@ -12,84 +12,51 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import {
-  User,
-  ShoppingBag,
-  Settings,
-  Plus,
-  LogOut,
-  ArrowUpRight,
-} from "lucide-react";
+import { User, ShoppingBag, Settings, Plus, LogOut } from "lucide-react";
+import { MobileNavigation } from "./mobile-navigation";
+import { NavbarShell } from "./navbar-shell";
+import { DesktopNav } from "./desktop-nav";
+import { Press } from "./motion";
 
 export async function Navbar() {
   const cookieStore = await cookies();
   const session = cookieStore.get("session")?.value;
   const userPayload = await decrypt(session);
 
-  const userName =
-    typeof userPayload?.name === "string" ? userPayload.name : "";
-
-  const userEmail =
-    typeof userPayload?.email === "string" ? userPayload.email : "";
-
-  const userRole =
-    typeof userPayload?.role === "string" ? userPayload.role : "";
+  const userName = typeof userPayload?.name === "string" ? userPayload.name : "";
+  const userEmail = typeof userPayload?.email === "string" ? userPayload.email : "";
+  const userRole = typeof userPayload?.role === "string" ? userPayload.role : "";
   const userInitial = (userName || userEmail || "S").charAt(0).toUpperCase();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur-xl">
-      <div className="mx-auto flex h-[72px] max-w-7xl items-center gap-8 px-4 sm:px-6 lg:px-8">
+    <NavbarShell>
+      <div className="mx-auto flex h-14 w-full max-w-7xl items-center gap-2 px-3 sm:h-16 sm:gap-5 sm:px-6 lg:h-[72px] lg:px-8">
+        {/* Mobile menu */}
+        <div className="md:hidden">
+          <MobileNavigation isLoggedIn={Boolean(userPayload)} isAdmin={userRole === "admin"} />
+        </div>
+
         {/* Brand */}
-        <Link href="/" className="group flex w-fit items-center gap-3">
-          <span className="flex size-10 items-center justify-center rounded-md bg-accent font-serif text-lg font-semibold text-accent-foreground shadow-sm transition-transform duration-200 group-hover:rotate-[-4deg]">
-            S
-          </span>
+        <Press scale={0.95} className="min-w-0 shrink">
+          <Link
+            href="/"
+            className="group flex min-w-0 items-center gap-2 sm:gap-3"
+            aria-label="Shelfmark home"
+          >
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-accent font-serif text-base font-semibold text-accent-foreground transition-transform duration-200 group-hover:rotate-[-4deg] sm:size-9 lg:size-10 lg:text-lg">
+              S
+            </span>
+            <span className="truncate font-serif text-lg font-semibold tracking-tight sm:text-xl">
+              Shelfmark
+            </span>
+          </Link>
+        </Press>
 
-          <span className="font-serif text-xl font-semibold tracking-tight">
-            Shelfmark
-          </span>
-        </Link>
-
-        {/* Navigation */}
-        <nav className="hidden flex-1 items-center justify-center md:flex">
-          <div className="flex items-center rounded-full border border-border/70 bg-muted/30 p-1">
-            <Link
-              href="/"
-              className="rounded-full px-4 py-2 text-xs font-medium text-muted-foreground transition-all hover:bg-background hover:text-foreground"
-            >
-              Home
-            </Link>
-
-            <Link
-              href="/collections"
-              className="rounded-full px-4 py-2 text-xs font-medium text-muted-foreground transition-all hover:bg-background hover:text-foreground"
-            >
-              Collections
-            </Link>
-
-            {userPayload && (
-              <Link
-                href="/orders"
-                className="rounded-full px-4 py-2 text-xs font-medium text-muted-foreground transition-all hover:bg-background hover:text-foreground"
-              >
-                Orders
-              </Link>
-            )}
-
-            {userRole === "admin" && (
-              <Link
-                href="/admin/add-product"
-                className="group flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-medium text-muted-foreground transition-all hover:bg-background hover:text-foreground"
-              >
-                Studio
-                <ArrowUpRight className="size-3 opacity-50 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </Link>
-            )}
-          </div>
-        </nav>
+        {/* Desktop navigation */}
+        <DesktopNav isLoggedIn={Boolean(userPayload)} isAdmin={userRole === "admin"} />
 
         {/* Actions */}
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
           <CartCounter />
 
           {userPayload ? (
@@ -98,7 +65,7 @@ export async function Navbar() {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="size-9 rounded-full border-border/70 bg-background shadow-none"
+                  className="size-9 rounded-full border-border/70 bg-background shadow-none transition-transform active:scale-90"
                   aria-label="Open profile menu"
                 >
                   <span className="flex size-7 items-center justify-center rounded-full bg-foreground text-[11px] font-medium text-background">
@@ -109,21 +76,17 @@ export async function Navbar() {
 
               <DropdownMenuContent
                 align="end"
-                sideOffset={10}
-                className="w-64 rounded-xl border-border/70 bg-background/95 p-1.5 shadow-xl backdrop-blur-xl"
+                sideOffset={8}
+                className="w-[min(16rem,calc(100vw-1.5rem))] rounded-2xl border-border/70 bg-background/95 p-1.5 shadow-xl backdrop-blur-xl"
               >
                 <DropdownMenuLabel className="px-3 py-3">
                   <div className="flex items-center gap-3">
-                    <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-foreground text-xs font-medium text-background">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-foreground text-sm font-medium text-background">
                       {userInitial}
                     </div>
-
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-medium">
-                        {userName || "Account"}
-                      </p>
-
-                      <p className="mt-0.5 truncate text-[11px] font-normal text-muted-foreground">
+                      <p className="truncate text-sm font-medium">{userName || "Account"}</p>
+                      <p className="mt-0.5 truncate text-xs font-normal text-muted-foreground">
                         {userEmail}
                       </p>
                     </div>
@@ -133,12 +96,9 @@ export async function Navbar() {
                 <DropdownMenuSeparator />
 
                 <DropdownMenuItem asChild>
-                  <Link
-                    href="/orders"
-                    className="cursor-pointer rounded-lg px-3 py-2.5 text-xs"
-                  >
+                  <Link href="/orders" className="cursor-pointer rounded-xl px-3 py-3 text-sm">
                     <ShoppingBag className="mr-3 size-4 text-muted-foreground" />
-                    My Orders
+                    My orders
                   </Link>
                 </DropdownMenuItem>
 
@@ -146,19 +106,16 @@ export async function Navbar() {
                   <DropdownMenuItem asChild>
                     <Link
                       href="/admin/add-product"
-                      className="cursor-pointer rounded-lg px-3 py-2.5 text-xs"
+                      className="cursor-pointer rounded-xl px-3 py-3 text-sm"
                     >
                       <Plus className="mr-3 size-4 text-muted-foreground" />
-                      Add Product
+                      Add product
                     </Link>
                   </DropdownMenuItem>
                 )}
 
                 <DropdownMenuItem asChild>
-                  <Link
-                    href="/settings"
-                    className="cursor-pointer rounded-lg px-3 py-2.5 text-xs"
-                  >
+                  <Link href="/settings" className="cursor-pointer rounded-xl px-3 py-3 text-sm">
                     <Settings className="mr-3 size-4 text-muted-foreground" />
                     Settings
                   </Link>
@@ -166,57 +123,45 @@ export async function Navbar() {
 
                 <DropdownMenuSeparator />
 
-                <form action={logout}>
-                  <DropdownMenuItem asChild>
+                <DropdownMenuItem asChild>
+                  <form action={logout} className="w-full">
                     <button
                       type="submit"
-                      className="w-full cursor-pointer rounded-lg px-3 py-2.5 text-xs text-destructive focus:text-destructive"
+                      className="flex w-full items-center rounded-xl px-3 py-3 text-sm text-destructive focus:outline-none"
                     >
                       <LogOut className="mr-3 size-4" />
-                      Logout
+                      Log out
                     </button>
-                  </DropdownMenuItem>
-                </form>
+                  </form>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <div className="hidden items-center gap-1.5 sm:flex">
-              <Link href="/login">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="rounded-full px-4 text-xs"
-                >
+            <>
+              <Link href="/login" className="hidden sm:block">
+                <Button variant="ghost" size="sm" className="rounded-full px-4 text-xs">
                   Login
                 </Button>
               </Link>
-
-              <Link href="/signup">
-                <Button
-                  size="sm"
-                  className="rounded-full px-4 text-xs shadow-sm"
-                >
+              <Link href="/signup" className="hidden sm:block">
+                <Button size="sm" className="rounded-full px-4 text-xs shadow-sm">
                   Create account
                 </Button>
               </Link>
-            </div>
-          )}
-
-          {/* Mobile account/login fallback */}
-          {!userPayload && (
-            <Link href="/login" className="sm:hidden">
-              <Button
-                variant="outline"
-                size="icon"
-                className="size-9 rounded-full"
-                aria-label="Login"
-              >
-                <User className="size-4" />
-              </Button>
-            </Link>
+              <Link href="/login" className="sm:hidden">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-9 rounded-full transition-transform active:scale-90"
+                  aria-label="Login"
+                >
+                  <User className="size-5" />
+                </Button>
+              </Link>
+            </>
           )}
         </div>
       </div>
-    </header>
+    </NavbarShell>
   );
 }

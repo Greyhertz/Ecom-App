@@ -29,21 +29,100 @@
     --input: 40 16% 85%;
     --ring: 36 52% 47%;
 
-    /* --radius: 0.3rem; */
     --radius: 6px;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-body), Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  h1 {
+    font-size: clamp(1.875rem, 5vw, 3rem);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+  }
+
+  h4 {
+    font-size: 1.125rem;
+  }
+
+  p {
+    line-height: 1.65;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button {
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
-.hairline {
-  border-color: hsl(var(--border));
+@layer components {
+  .page-title {
+    @apply font-serif text-foreground tracking-tight;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .section-title {
+    @apply font-serif text-foreground tracking-tight;
+    font-size: clamp(1.375rem, 3vw, 1.875rem);
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .body-copy {
+    @apply text-muted-foreground;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+  }
+
+  .eyebrow {
+    @apply text-muted-foreground font-medium uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+  }
+
+  .hairline {
+    border-color: hsl(var(--border));
+  }
 }
